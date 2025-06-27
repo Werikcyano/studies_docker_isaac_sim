@@ -1,0 +1,10 @@
+# Esta pasta é destinada aos seus projetos personalizados do Isaac Sim
+# Coloque aqui seus scripts Python, configurações, modelos, etc.
+
+# Estrutura sugerida:
+# projects/
+# ├── python_scripts/     # Scripts Python personalizados
+# ├── robot_models/       # Modelos de robôs customizados  
+# ├── environments/       # Ambientes de simulação
+# ├── configs/           # Arquivos de configuração
+# └── examples/          # Exemplos e tutoriais 

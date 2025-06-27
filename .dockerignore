@@ -1,0 +1,30 @@
+# Ignorar arquivos desnecessários durante build
+.git/
+.gitignore
+README.md
+docs/
+*.md
+
+# Dados e cache local
+data/
+logs/
+
+# Arquivos de configuração local
+.env
+*.local
+*.tmp
+
+# Arquivos de backup
+*~
+*.bak
+*.swp
+*.orig
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  isaac-sim:
+    build: .
+    image: isaac-sim-custom:4.5.0
+    container_name: isaac-sim-container
+    
+    # Configurações de GPU NVIDIA
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ACCEPT_EULA=Y
+      - PRIVACY_CONSENT=Y
+      - DISPLAY=:1
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    
+    # Configurações de rede
+    network_mode: host
+    
+    # Volumes para persistência de dados
+    volumes:
+      # Cache para melhor performance
+      - ./data/cache/kit:/isaac-sim/kit/cache:rw
+      - ./data/cache/ov:/root/.cache/ov:rw
+      - ./data/cache/pip:/root/.cache/pip:rw
+      - ./data/cache/glcache:/root/.cache/nvidia/GLCache:rw
+      - ./data/cache/computecache:/root/.nv/ComputeCache:rw
+      
+      # Logs
+      - ./data/logs:/root/.nvidia-omniverse/logs:rw
+      
+      # Dados do usuário
+      - ./data/documents:/root/Documents:rw
+      - ./data/local:/root/.local/share/ov/data:rw
+      
+      # Projetos customizados
+      - ./projects:/isaac-sim/projects:rw
+      
+      # Scripts customizados
+      - ./scripts:/isaac-sim/custom-scripts:rw
+    
+    # Configurações adicionais
+    stdin_open: true
+    tty: true
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Portas para WebRTC streaming
+    ports:
+      - "8211:8211"
+      - "8899:8899"
+      - "8899:8899/udp"
+    
+    # Healthcheck para verificar se Isaac Sim está rodando
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8211/"] 
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Serviço adicional para desenvolvimento (opcional)
+  isaac-sim-dev:
+    build: .
+    image: isaac-sim-custom:4.5.0
+    container_name: isaac-sim-dev
+    profiles: ["dev"]
+    
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ACCEPT_EULA=Y
+      - PRIVACY_CONSENT=Y
+    
+    network_mode: host
+    
+    volumes:
+      - ./data/cache/kit:/isaac-sim/kit/cache:rw
+      - ./data/cache/ov:/root/.cache/ov:rw
+      - ./projects:/isaac-sim/projects:rw
+      - ./scripts:/isaac-sim/custom-scripts:rw
+    
+    command: /bin/bash
+    stdin_open: true
+    tty: true 

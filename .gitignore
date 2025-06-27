@@ -1,0 +1,68 @@
+# Isaac Sim Downloads - arquivos muito grandes
+downloads/*.AppImage
+downloads/*.tar.gz
+downloads/*.zip
+downloads/*.deb
+downloads/*.run
+
+# Logs
+logs/
+*.log
+data/logs/
+
+# Cache e arquivos temporários
+data/cache/
+data/local/
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Docker volumes e dados persistentes
+data/documents/
+data/isaac-sim/
+
+# IDE e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS gerados
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+*.orig
+
+# Arquivos de ambiente com credenciais
+.env
+*.env.local
+*.env.production
+
+# Arquivos de backup
+*.bak
+*.backup
+*.tmp
+
+# Arquivos grandes em geral
+*.iso
+*.dmg
+*.pkg
+
+# NVIDIA e GPU cache
+.nv/
+.nvidia/
+
+# Isaac Sim específicos
+**/isaac-sim-*
+**/omniverse-*
+nucleus_server/ 

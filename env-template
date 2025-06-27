@@ -1,0 +1,31 @@
+# Configurações do Isaac Sim Docker
+# Copie este arquivo para .env e ajuste conforme necessário
+
+# Configurações de usuário
+USER_ID=1000
+GROUP_ID=1000
+USERNAME=isaac
+
+# Configurações do Isaac Sim
+ISAAC_SIM_VERSION=4.5.0
+ACCEPT_EULA=Y
+PRIVACY_CONSENT=Y
+
+# Configurações de rede
+# IP do host para conexão WebRTC (deixe vazio para auto-detectar)
+HOST_IP=
+
+# Configurações ROS2 (se aplicável)
+RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ROS_DOMAIN_ID=0
+
+# Configurações GPU
+NVIDIA_VISIBLE_DEVICES=all
+NVIDIA_DRIVER_CAPABILITIES=all
+
+# Configurações de cache (em MB)
+SHARED_MEMORY_SIZE=512m
+
+# Configurações de desenvolvimento
+DEBUG_MODE=false
+ENABLE_PROFILING=false 

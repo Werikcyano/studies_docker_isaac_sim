@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Configuração FastDDS para Isaac Sim ROS2
+  Permite comunicação entre múltiplas máquinas na rede
+  Baseado na documentação oficial da NVIDIA
+-->
+
+<license>
+Copyright (c) 2022-2024, NVIDIA CORPORATION. All rights reserved.
+NVIDIA CORPORATION and its licensors retain all intellectual property
+and proprietary rights in and to this software, related documentation
+and any modifications thereto. Any use, reproduction, disclosure or
+distribution of this software and related documentation without an express
+license agreement from NVIDIA CORPORATION is strictly prohibited.
+</license>
+
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+    <!-- Configuração de transporte UDP para comunicação multi-máquina -->
+    <transport_descriptors>
+        <transport_descriptor>
+            <transport_id>UdpTransport</transport_id>
+            <type>UDPv4</type>
+            <!-- Interface de rede específica (opcional) -->
+            <!-- <interfaceWhiteList>
+                <address>192.168.1.0</address>
+            </interfaceWhiteList> -->
+        </transport_descriptor>
+    </transport_descriptors>
+
+    <!-- Perfil padrão para participantes ROS2 -->
+    <participant profile_name="udp_transport_profile" is_default_profile="true">
+        <rtps>
+            <!-- Usar apenas transporte UDP (desabilitar shared memory) -->
+            <userTransports>
+                <transport_id>UdpTransport</transport_id>
+            </userTransports>
+            <useBuiltinTransports>false</useBuiltinTransports>
+            
+            <!-- Configurações de descoberta -->
+            <builtin>
+                <discovery_config>
+                    <!-- Permitir descoberta automática -->
+                    <discoveryProtocol>SIMPLE</discoveryProtocol>
+                    <use_SIMPLE_EndpointDiscoveryProtocol>true</use_SIMPLE_EndpointDiscoveryProtocol>
+                    <use_SIMPLE_ParticipantDiscoveryProtocol>true</use_SIMPLE_ParticipantDiscoveryProtocol>
+                    
+                    <!-- Configuração de lease duration -->
+                    <leaseDuration>
+                        <sec>10</sec>
+                        <nanosec>0</nanosec>
+                    </leaseDuration>
+                </discovery_config>
+            </builtin>
+        </rtps>
+        
+        <!-- Nome do participante -->
+        <name>IsaacSimROS2Participant</name>
+    </participant>
+
+    <!-- Perfil específico para Isaac Sim (opcional) -->
+    <participant profile_name="isaac_sim_profile">
+        <rtps>
+            <userTransports>
+                <transport_id>UdpTransport</transport_id>
+            </userTransports>
+            <useBuiltinTransports>false</useBuiltinTransports>
+            
+            <!-- Configurações otimizadas para Isaac Sim -->
+            <throughputController>
+                <bytesPerPeriod>8192</bytesPerPeriod>
+                <periodMillisecs>100</periodMillisecs>
+            </throughputController>
+        </rtps>
+        <name>IsaacSimParticipant</name>
+    </participant>
+
+    <!-- Configurações para publishers de alta frequência -->
+    <publisher profile_name="high_frequency_publisher">
+        <topic>
+            <historyQos>
+                <kind>KEEP_LAST</kind>
+                <depth>1</depth>
+            </historyQos>
+            <resourceLimitsQos>
+                <max_samples>50</max_samples>
+                <max_instances>1</max_instances>
+                <max_samples_per_instance>50</max_samples_per_instance>
+            </resourceLimitsQos>
+        </topic>
+    </publisher>
+
+    <!-- Configurações para subscribers -->
+    <subscriber profile_name="default_subscriber">
+        <topic>
+            <historyQos>
+                <kind>KEEP_LAST</kind>
+                <depth>10</depth>
+            </historyQos>
+            <reliabilityQos>
+                <kind>RELIABLE</kind>
+            </reliabilityQos>
+        </topic>
+    </subscriber>
+</profiles> 
